@@ -1,0 +1,41 @@
+/* pages/daily_setting/daily_setting.wxss */
+
+page {
+  background-color: #EEEEEE;
+}
+
+.photo-setting {
+  margin-bottom: 1%;
+}
+
+.van-grid-item__content {
+  background:  #EEEEEE !important;
+  padding: var(--grid-item-content-padding,10px 8px) !important;
+}
+
+.goals-item {
+  border-radius: 0.5em;
+  text-align: center;
+  padding-top: 10%;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.hover-button {
+  opacity: 0.9;
+  background: #f7f7f7;
+}
+.wrapper{
+  padding-top: 22%;
+}
+.choose_date{
+  position: relative;
+  margin-top:30%;
+}
+.count_days_cell{
+  margin-top:30%;
+}
+.row_button{
+  margin-top: 15%;
+}

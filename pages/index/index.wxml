@@ -1,0 +1,45 @@
+<!--index.wxml-->
+
+<view class="container">
+  <view class="photo">
+    <!-- <van-divider contentPosition="center"
+          customStyle="color: black;  font-size: 15px;font-family:Georgia, 'Times New Roman', Times, serif">
+          photo🏕️
+        </van-divider> -->
+    <van-image fit="widthFix" custom-class="image-show" src="{{imgurl}}"></van-image>
+  </view>
+
+  <view class="motto">
+    <view class="motto-show">
+      <view
+        style="text-align: center;color: black; font-size: 15px;font-family:Georgia, 'Times New Roman', Times, serif;padding: 0.5em 0 0.5em 0 ;">
+        ☀️motto✨</view>
+      {{text_content}}
+    </view>
+  </view>
+
+  <view class="goals_date">
+    <van-row custom-class="goals-date-row">
+      <van-col offset="1" custom-class="goals-date-col1" span="10">
+        <view
+          style="text-align: center;color: black; font-size: 15px;font-family:Georgia, 'Times New Roman', Times, serif;padding: 0.5em 0 0.5em 0 ;">
+          🎯goals</view>
+        <van-row wx:for="{{goals}}" wx:for-item="goal" custom-class="goals-divide">
+          <van-col span="15" offset="1">{{goal.text}}</van-col>
+          <van-col span="7" offset="1" custom-class="goals-date-time">
+            <van-count-down time="{{ goal.time }}" format="DD 天" />
+          </van-col>
+        </van-row>
+      </van-col>
+      <van-col custom-class="goals-date-col2" offset="2" span="10">
+        <view
+          style="text-align: center;color: black; font-size: 15px;font-family:Georgia, 'Times New Roman', Times, serif;padding: 0.5em 0 0.5em 0 ;">
+          Today🗓️</view>
+        <van-row wx:for="{{today}}" wx:for-item="date" custom-class="goals-divide">
+          <van-col span="22" offset="1">{{date.text}}</van-col>
+        </van-row>
+      </van-col>
+    </van-row>
+  </view>
+
+</view>

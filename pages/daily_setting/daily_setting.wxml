@@ -1,0 +1,109 @@
+<!--pages/daily_setting/daily_setting.wxml-->
+<page-meta page-style="{{ show ? 'overflow: hidden;' : '' }}" />
+<!-- 导航栏 -->
+<van-nav-bar custom-style="background-color: #EEEEEE;" fixed="true" placeholder="true" title="每日设置" left-text="返回"
+  left-arrow bind:click-left="onClickLeft" />
+
+<view class="photo_type">
+  <van-cell-group title="图片">
+    <van-cell title="图片类型" value="{{photo_type}}" is-link bind:click="photo_showPopup" />
+    <van-popup show="{{ photo_type_show }}" custom-style="height: 40%;" closeable position="bottom"
+      bind:close="photo_type_onClose">
+      <van-picker columns="{{ photo_columns }}" bind:change="photo_onChange"  default-index="{{ default_index_photo }}" />
+    </van-popup>
+  </van-cell-group>
+  <van-cell-group title="语录">
+    <van-cell title="语录类型" value="{{motto_type}}" is-link bind:click="motto_showPopup" />
+    <van-popup show="{{ motto_type_show }}" custom-style="height: 40%;" closeable position="bottom"
+      bind:close="motto_type_onClose">
+      <van-picker columns="{{ motto_columns }}" default-index="{{ default_index_motto }}" bind:change="motto_onChange" />
+    </van-popup>
+  </van-cell-group>
+</view>
+<!-- goals的设置 -->
+<van-cell-group title="goals">
+  <van-grid square custom-class="grid" border="{{false}}" column-num="3" gutter="{{ 2 }}">
+    <van-grid-item use-slot bind:click="GoalsTap" wx:for="{{goals}}" wx:for-index="index" wx:for-item="item"
+      data-text="{{item.text}}" data-time="{{item.time}}" data-index="{{index}}">
+      <view class="goals-item" hover-class="hover-button">{{item.text}}
+        <view style="margin-top:5%;">
+          <van-count-down time="{{item.time}}" format="DD 天" />
+        </view>
+      </view>
+    </van-grid-item>
+    <van-popup show="{{ goals_detail_show}}" custom-style="height: 60%;width:75%" round closeable
+      bind:close="goals_onClose">
+      <view class="wrapper">
+        <van-cell-group inset>
+          <van-field model:value="{{popup_text }}" label="goal🎯" placeholder="请输入" auto-focus
+            autosize="maxHeight: 100, minHeight: 50" maxlength="100" title-width="4em" type="textarea"
+            input-align="center" />
+          <van-cell custom-class="choose_date" title="选择日期" value="{{  popup_calender }}"
+            bind:click="calender_onDisplay" />
+          <van-calendar show="{{ calender_show }}" bind:close="calender_onClose" bind:confirm="calender_onConfirm"
+            show-confirm="{{ false }}" max-date="{{max_date}}" default-date="{{popup_default_date}}" />
+          <van-cell title="距离天数" custom-class="count_days_cell" border="{{ false }}">
+            <van-count-down time="{{popup_count}}" format="DD 天" />
+          </van-cell>
+          <van-row custom-class="row_button">
+            <van-col span="10" offset="1">
+              <van-button bind:click="goal_item_delete" size="large"
+                custom-style="border-radius:1em;border:1.5px solid;" plain color="#FF8080">
+                <view style="font-weight: bold;">删除</view>
+              </van-button>
+            </van-col>
+            <van-col span="10" offset="2">
+              <van-button bind:click="goal_item_save" size="large" custom-style="border-radius:1em;border:1.5px solid;"
+                plain color="#07c160">
+                <view style="font-weight: bold;">保存</view>
+              </van-button>
+            </van-col>
+          </van-row>
+        </van-cell-group>
+      </view>
+    </van-popup>
+    <van-grid-item icon="/images/icon/Union.png" text="添加" bind:click="GoalsTap" data-text="" data-time="0"
+      data-index="-1" />
+  </van-grid>
+</van-cell-group>
+<!-- today设置 -->
+<van-cell-group title="today">
+  <van-grid square custom-class="grid" border="{{false}}" column-num="4" gutter="{{ 2 }}">
+    <van-grid-item use-slot bind:click="TodayTap" wx:for="{{today}}" wx:for-index="index" wx:for-item="item"
+      data-text="{{item.text}}" data-index="{{index}}">
+      <view class="goals-item" hover-class="hover-button">{{item.text}}
+      </view>
+    </van-grid-item>
+    <van-popup show="{{ today_detail_show}}" custom-style="height: 45%;width:75%" round closeable
+      bind:close="today_onClose">
+      <view class="wrapper">
+        <van-cell-group>
+          <van-field model:value="{{ today_popup_text }}" label="today🧋" placeholder="请输入" auto-focus
+            autosize="maxHeight: 100, minHeight: 50" maxlength="100" title-width="4em" type="textarea"
+            input-align="center" custom-style="margin-top: 3em;" />
+          <van-row custom-class="row_button">
+            <van-col span="10" offset="1">
+              <van-button bind:click="today_item_delete" size="large"
+                custom-style="border-radius:1em;border:1.5px solid;" plain color="#FF8080">
+                <view style="font-weight: bold;">删除</view>
+              </van-button>
+            </van-col>
+            <van-col span="10" offset="2">
+              <van-button bind:click="today_item_save" size="large" custom-style="border-radius:1em;border:1.5px solid;"
+                plain color="#07c160">
+                <view style="font-weight: bold;">保存</view>
+              </van-button>
+            </van-col>
+          </van-row>
+        </van-cell-group>
+      </view>
+    </van-popup>
+    <van-grid-item icon="/images/icon/Union.png" text="添加" bind:click="TodayTap" data-text="" data-index="-1" />
+  </van-grid>
+</van-cell-group>
+
+<van-button bind:click="setting_save" size="large"
+  custom-style="border-radius:1em;border:1.5px solid;margin-top:1em;position:relative;margin-bottom:1.5em " color="#07c160">
+  <view style="font-weight: bold;">保存</view>
+</van-button>
+<van-toast id="van-toast" />

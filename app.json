@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/setting/setting",
+    "pages/daily_setting/daily_setting"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#EEEEEE",
+    "navigationBarTitleText": "inspire daily",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "van-nav-bar": "@vant/weapp/nav-bar/index"
+  },
+  "tabBar": {
+    "position": "bottom",
+    "borderStyle": "black",
+    "list": [{
+        "selectedIconPath": "/images/icon/selected_day.png",
+        "iconPath": "/images/icon/unselected_day.png",
+        "pagePath": "pages/index/index",
+        "text": "每日"
+      },
+      {
+        "selectedIconPath": "/images/icon/selected_ins.png",
+        "iconPath": "/images/icon/unselected_ins.png",
+        "pagePath": "pages/setting/setting",
+        "text": "版块"
+      }
+    ]
+  }
+}

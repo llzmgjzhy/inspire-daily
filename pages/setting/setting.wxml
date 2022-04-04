@@ -1,0 +1,34 @@
+<!--pages/setting/setting.wxml-->
+<view>
+  <van-nav-bar
+  title="inspire daily"
+/>
+  <view class="login">
+    <view class="user-logo">
+      <van-image wx:if="{{!hasUserInfo}}" round width="4rem" cover height="4rem"
+        src="https://img.yzcdn.cn/vant/cat.jpeg" />
+      <van-image wx:else="{{hasUserInfo}}" round width="4rem" cover height="4rem" src="{{userInfo.avatarUrl}}" />
+    </view>
+    <view class="button-login">
+      <view wx:if="{{hasUserInfo}}">{{userInfo.nickName}}</view>
+      <van-button wx:if="{{!hasUserInfo}}" bind:click="login" size="small"
+        custom-style="border-radius:1em;border:2px solid;" plain color="#07c160">
+        <view style="font-weight: bold;">登陆</view>
+      </van-button>
+    </view>
+  </view>
+</view>
+<view class="divider">
+  <van-divider customStyle="color: #1989fa;" />
+</view>
+<van-grid square border="{{false}}" custom-class="grid" column-num="2" gutter="{{ 15 }}">
+  <van-grid-item use-slot wx:for="{{gridlist}}" wx:for-index="index" wx:for-item="list" custom-class="grid-item"
+    bind:click="tap{{index}}">
+    <view class="item-view{{index}}" hover-class="hover-button">
+      <van-image width="100" height="100" src="{{list.iconpath}}"></van-image>
+      <text class="grid-item-text">
+        {{list.text}}</text>
+    </view>
+  </van-grid-item>
+  <van-toast id="van-toast" />
+</van-grid>

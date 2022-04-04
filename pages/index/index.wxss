@@ -1,0 +1,53 @@
+/**index.wxss**/
+page {
+  /* background-color: rgb(243, 243, 243); */
+  background-color: #EEEEEE;
+}
+
+.photo {
+  text-align: center;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.image-show {
+  width: 100%;
+}
+
+.motto-show {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  padding: 0 1em 0 1em;
+  background: white;
+  text-align: center;
+  border-radius: 1em 1em 1em 1em;
+  margin: 1em 1em 0em 1em;
+  height: 100%;
+  padding-bottom: 1em;
+}
+
+.goals_date {
+  margin: 1em 0em 1em 0em;
+}
+
+.goals-date-col1 {
+  background: white;
+  /* text-align: center; */
+  border-radius: 1em 1em 1em 1em;
+  padding-bottom: 1em;
+}
+
+.goals-date-col2 {
+  background: white;
+  text-align: center;
+  border-radius: 1em 1em 1em 1em;
+  padding-bottom: 1em;
+}
+
+.goals-divide {
+  padding-bottom: 2px;
+}
