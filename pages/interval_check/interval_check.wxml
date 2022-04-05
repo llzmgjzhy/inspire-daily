@@ -1,0 +1,58 @@
+<page-meta page-style="{{ show ? 'overflow: hidden;' : '' }}" />
+<!-- 导航栏 -->
+<van-nav-bar custom-style="background-color: #EEEEEE;" fixed="true" placeholder="true" title="间隔查看" left-text="返回"
+  left-arrow bind:click-left="onClickLeft" />
+
+  <!-- interval设置 -->
+<van-cell-group>
+  <van-grid square custom-class="grid" border="{{false}}" column-num="2" gutter="{{ 2 }}">
+    <van-grid-item use-slot bind:click="GoalsTap" wx:for="{{goals}}" wx:for-index="index" wx:for-item="item"
+      data-text="{{item.text}}" data-time="{{item.time}}" data-index="{{index}}" data-formatdate="{{item.formatDate}}">
+      <view class="goals-item" hover-class="hover-button">{{item.text}}
+      <view class="formatdate">{{item.formatDate}}</view>
+        <view style="margin-top:12%;">
+          <van-count-down time="{{item.time}}" format="DD 天" />
+        </view>
+      </view>
+    </van-grid-item>
+    <van-popup show="{{ goals_detail_show}}" custom-style="height: 60%;width:75%" round closeable
+      bind:close="goals_onClose">
+      <view class="wrapper">
+        <van-cell-group inset>
+          <van-field model:value="{{popup_text }}" label="goal🎯" placeholder="请输入" auto-focus
+            autosize="maxHeight: 100, minHeight: 50" maxlength="100" title-width="4em" type="textarea"
+            input-align="center" />
+          <van-cell custom-class="choose_date" title="选择日期" value="{{  popup_calender }}"
+            bind:click="calender_onDisplay" />
+          <van-calendar show="{{ calender_show }}" bind:close="calender_onClose" bind:confirm="calender_onConfirm"
+            show-confirm="{{ false }}" min-date="{{min_date}}" max-date="{{max_date}}" default-date="{{popup_default_date}}" />
+          <van-cell title="距离天数" custom-class="count_days_cell" border="{{ false }}">
+            <van-count-down time="{{popup_count}}" format="DD 天" />
+          </van-cell>
+          <van-row custom-class="row_button">
+            <van-col span="10" offset="1">
+              <van-button bind:click="goal_item_delete" size="large"
+                custom-style="border-radius:1em;border:1.5px solid;" plain color="#FF8080">
+                <view style="font-weight: bold;">删除</view>
+              </van-button>
+            </van-col>
+            <van-col span="10" offset="2">
+              <van-button bind:click="goal_item_save" size="large" custom-style="border-radius:1em;border:1.5px solid;"
+                plain color="#07c160">
+                <view style="font-weight: bold;">保存</view>
+              </van-button>
+            </van-col>
+          </van-row>
+        </van-cell-group>
+      </view>
+    </van-popup>
+    <van-grid-item icon="/images/icon/Union.png" text="添加" bind:click="GoalsTap" data-text="" data-time="0"
+      data-index="-1" />
+  </van-grid>
+</van-cell-group>
+
+<van-button bind:click="setting_save" size="large"
+  custom-style="border-radius:1em;border:1.5px solid;margin-top:1em;position:relative;margin-bottom:1.5em " color="#07c160">
+  <view style="font-weight: bold;">保存</view>
+</van-button>
+<van-toast id="van-toast" />

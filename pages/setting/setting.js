@@ -35,13 +35,17 @@ Page({
     })
   },
   tap1: function () {
-    Toast.fail('在快马加鞭的编写中');
+    wx.navigateTo({
+      url: '/pages/interval_check/interval_check',
+    })
   },
   tap2: function () {
-    Toast.fail('在快马加鞭的编写中');
+    Toast.fail('自己找个文档去记录吧嘻嘻');
   },
   tap3: function () {
-    Toast.fail('在快马加鞭的编写中');
+    wx.navigateTo({
+      url: '/pages/help/help',
+    })
   },
   login: function () {
     var app = getApp()
@@ -86,12 +90,35 @@ Page({
               //可以把openid保存到本地缓存，方便以后调用
               wx.setStorageSync('openid', res.data.openid);
               const openid = res.data.openid
+              const app = getApp()
+              // 初始化goals存入数据
+              var standard_goals = app.globalData.goals
+              var nowtime = new Date().getTime()
+              for (var i = 0; i < standard_goals.length; i++) {
+                standard_goals[i].time = parseInt(standard_goals[i].time) + nowtime
+              }
+              // 初始化interval存入数据
+              var standard_interval = app.globalData.interval
+              for (var i = 0; i < standard_interval.length; i++) {
+                var formatdate = standard_interval[i].formatDate
+                var resday = Date.parse(new Date(formatdate))
+                if (resday > nowtime) {
+                  standard_interval[i].time = parseInt(standard_interval[i].time) + nowtime
+                } else {
+                  standard_interval[i].time = nowtime - parseInt(standard_interval[i].time)
+                }
+              }
               wx.request({
                 url: 'http://120.25.169.51/inspire-daily/server/inda.php',
                 data: {
                   action: "user_save",
                   openid: res.data.openid,
-                  nickname: that.data.userInfo.nickName
+                  nickname: that.data.userInfo.nickName,
+                  photo_type: '0',
+                  motto_type: '0',
+                  goals: JSON.stringify(standard_goals),
+                  today: JSON.stringify(app.globalData.today),
+                  inter: JSON.stringify(standard_interval)
                 },
                 header: {
                   "Content-Type": "application/json"
@@ -108,7 +135,14 @@ Page({
                     },
                     success: function (res) {
                       const app = getApp()
-                      app.globalData.goals = JSON.parse(res.data.data[0].goals)
+                      var nowtime = new Date().getTime()
+                      var standard_goals = JSON.parse(res.data.data[0].goals)
+                      for (var i = 0; i < standard_goals.length; i++) {
+                        standard_goals[i].time = parseInt(standard_goals[i].time) - nowtime
+                      }
+                      app.globalData.photo_type = res.data.data[0].photo_type
+                      app.globalData.motto_type = res.data.data[0].motto_type
+                      app.globalData.goals = standard_goals
                       app.globalData.today = JSON.parse(res.data.data[0].today)
                     },
                   })
@@ -142,7 +176,7 @@ Page({
         userInfo: wx.getStorageSync('userInfo')
       })
     }
-    console.log(this.data.userInfo)
+    // console.log(this.data.userInfo)
   },
 
   /**

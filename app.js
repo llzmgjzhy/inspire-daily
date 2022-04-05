@@ -15,8 +15,8 @@ App({
   },
   globalData: {
     userInfo: "",
-    photo_type: "",
-    motto_type: "",
+    photo_type: "0",
+    motto_type: "0",
     goals: [{
       text: "送花",
       time: 354365145
@@ -38,6 +38,11 @@ App({
       text: "写代码"
     }, {
       text: "冰淇淋"
+    }],
+    interval:[{
+      text: "看星星",
+      time: "170684546612",
+      formatDate: "2016-11-7"
     }]
   }
 })

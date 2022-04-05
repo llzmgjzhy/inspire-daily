@@ -2,7 +2,9 @@
   "pages": [
     "pages/index/index",
     "pages/setting/setting",
-    "pages/daily_setting/daily_setting"
+    "pages/daily_setting/daily_setting",
+    "pages/interval_check/interval_check",
+    "pages/help/help"
   ],
   "window": {
     "backgroundTextStyle": "light",

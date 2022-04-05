@@ -1,0 +1,23 @@
+/* pages/help/help.wxss */
+boby {
+  font-family: Verdana, Geneva, Arial, sans-serif；
+}
+
+.container {
+  margin: 0em 1em 1em 1em;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.part {
+  padding: 0.5em 0 0.5em 0;
+}
+
+.content {
+  font-weight: bold;
+}
+text {
+  margin: 4px 2px 2px 2px;
+}

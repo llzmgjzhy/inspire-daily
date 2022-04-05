@@ -11,8 +11,8 @@ Page({
     motto_type: "",
     default_index_photo: 0,
     default_index_motto: 0,
-    photo_columns: ["风景", "动漫", "海贼王"],
-    motto_columns: ["励志", "网易云", "毒鸡汤", "搞笑"],
+    photo_columns: ["风景", "动漫"],
+    motto_columns: ["理想", "志向", "爱情","青春","鸡汤语录","网易云热评"],
     // time的格式是日期距今的毫秒数
     goals: [{
         text: "送花",
@@ -144,7 +144,6 @@ Page({
   calender_onDisplay() {
     this.setData({
       calender_show: true,
-
     })
   },
   calender_onClose() {
@@ -272,7 +271,12 @@ Page({
       app.globalData.motto_type = this.data.default_index_motto;
       app.globalData.goals = this.data.goals;
       app.globalData.today = this.data.today;
-      console.log(app.globalData)
+      // console.log(app.globalData)
+      var nowtime = new Date().getTime()
+      var standard_goals = this.data.goals
+      for (var i = 0; i < standard_goals.length; i++) {
+        standard_goals[i].time = parseInt(standard_goals[i].time) + nowtime
+      }
       wx.request({
         url: 'http://120.25.169.51/inspire-daily/server/inda.php',
         data: {
@@ -280,7 +284,7 @@ Page({
           openid: this.data.openid,
           photo_type: this.data.default_index_photo,
           motto_type: this.data.default_index_motto,
-          goals: JSON.stringify(this.data.goals),
+          goals: JSON.stringify(standard_goals),
           today: JSON.stringify(this.data.today),
         },
         header: {
@@ -320,9 +324,14 @@ Page({
           "Content-Type": "application/json"
         },
         success: function (res) {
+          var nowtime = new Date().getTime()
+          var standard_goals = JSON.parse(res.data.data[0].goals)
+          for (var i = 0; i < standard_goals.length; i++) {
+            standard_goals[i].time = parseInt(standard_goals[i].time) - nowtime
+          }
           wx.setStorageSync('goals', res.data.data[0].goals)
           wx.setStorageSync('today', res.data.data[0].today)
-          var goals = JSON.parse(res.data.data[0].goals)
+          var goals = standard_goals
           var today = JSON.parse(res.data.data[0].today)
           var photo_index = parseInt(res.data.data[0].photo_type)
           var motto_index = parseInt(res.data.data[0].motto_type)
