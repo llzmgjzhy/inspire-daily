@@ -19,7 +19,8 @@ Page({
     popup_count: "",
     popup_index: "",
     // 是否为过去时间的判断，1为是，0为否
-    popup_past: ""
+    popup_past: "",
+    transition_show:true
   },
   GoalsTap(event) {
     // console.log(event);
@@ -148,6 +149,7 @@ Page({
   // 最下方保存按钮函数
   setting_save() {
     if (!!wx.getStorageSync('openid')) {
+      var app = getApp()
       var nowtime = new Date().getTime()
       var standard_goals = this.data.goals
       for (var i = 0; i < standard_goals.length; i++) {
@@ -160,7 +162,7 @@ Page({
         }
       }
       wx.request({
-        url: 'http://120.25.169.51/inspire-daily/server/inda.php',
+        url: 'https://xubeiyang.com.cn/inspire-daily/server/inda.php',
         data: {
           action: "save_interval",
           openid: this.data.openid,
@@ -172,6 +174,7 @@ Page({
         success: function (res) {
           // console.log(res.data);
           Toast.success('保存成功');
+          app.globalData.interval = standard_goals
         },
       })
     } else {
@@ -182,10 +185,46 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中',
+    });
+    var that = this;
+    var app = getApp()
+    // 获取存储信息
     if (!!wx.getStorageSync('openid')) {
-      this.setData({
+      that.setData({
         openid: wx.getStorageSync('openid')
       })
+      if (that.data.goals != app.globalData.interval) {
+        wx.request({
+          url: 'https://xubeiyang.com.cn/inspire-daily/server/inda.php',
+          data: {
+            action: "get_interval",
+            openid: that.data.openid,
+          },
+          header: {
+            "Content-Type": "application/json"
+          },
+          success: function (res) {
+            // console.log(res)
+            var nowtime = new Date().getTime()
+            var standard_goals = JSON.parse(res.data.data[0].goals)
+            for (var i = 0; i < standard_goals.length; i++) {
+              var formatdate = standard_goals[i].formatDate
+              var res = Date.parse(new Date(formatdate))
+              if (res > nowtime) {
+                standard_goals[i].time = parseInt(standard_goals[i].time) - nowtime
+              } else {
+                standard_goals[i].time = nowtime - parseInt(standard_goals[i].time)
+              }
+            }
+            var goals = standard_goals
+            that.setData({
+              goals: goals,
+            })
+          },
+        })
+      }
     }
   },
 
@@ -193,7 +232,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    wx.hideLoading();
   },
 
   /**
@@ -201,41 +240,6 @@ Page({
    */
   onShow: function () {
     Toast.success('记得点击最下方按钮哟！');
-    var that = this;
-    // 获取存储信息
-    if (!!wx.getStorageSync('openid')) {
-      that.setData({
-        openid: wx.getStorageSync('openid')
-      })
-      wx.request({
-        url: 'http://120.25.169.51/inspire-daily/server/inda.php',
-        data: {
-          action: "get_interval",
-          openid: that.data.openid,
-        },
-        header: {
-          "Content-Type": "application/json"
-        },
-        success: function (res) {
-          console.log(res)
-          var nowtime = new Date().getTime()
-          var standard_goals = JSON.parse(res.data.data[0].goals)
-          for (var i = 0; i < standard_goals.length; i++) {
-            var formatdate = standard_goals[i].formatDate
-            var res = Date.parse(new Date(formatdate))
-            if (res > nowtime) {
-              standard_goals[i].time = parseInt(standard_goals[i].time) - nowtime
-            } else {
-              standard_goals[i].time = nowtime - parseInt(standard_goals[i].time)
-            }
-          }
-          var goals = standard_goals
-          that.setData({
-            goals: goals,
-          })
-        },
-      })
-    }
   },
 
   /**

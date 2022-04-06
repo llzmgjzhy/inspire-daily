@@ -53,7 +53,7 @@ Page({
     wx.getUserProfile({
       desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
       success: (res) => {
-        console.log(res)
+        // console.log(res)
         if (res.userInfo.nickName == '') {
           res.userInfo.nickName = '🍊'
         }
@@ -109,7 +109,7 @@ Page({
                 }
               }
               wx.request({
-                url: 'http://120.25.169.51/inspire-daily/server/inda.php',
+                url: 'https://xubeiyang.com.cn/inspire-daily/server/inda.php',
                 data: {
                   action: "user_save",
                   openid: res.data.openid,
@@ -125,7 +125,7 @@ Page({
                 },
                 success: function (res) {
                   wx.request({
-                    url: 'http://120.25.169.51/inspire-daily/server/inda.php',
+                    url: 'https://xubeiyang.com.cn/inspire-daily/server/inda.php',
                     data: {
                       action: "get_info",
                       openid: openid,

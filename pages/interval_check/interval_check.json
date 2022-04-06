@@ -11,6 +11,7 @@
     "van-cell-group": "@vant/weapp/cell-group/index",
     "van-calendar": "@vant/weapp/calendar/index",
     "van-button": "@vant/weapp/button/index",
-    "van-toast": "@vant/weapp/toast/index"
+    "van-toast": "@vant/weapp/toast/index",
+    "van-loading": "@vant/weapp/loading/index"
   }
 }

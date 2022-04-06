@@ -1,10 +1,11 @@
 /* pages/help/help.wxss */
 boby {
-  font-family: Verdana, Geneva, Arial, sans-serif；
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 }
 
 .container {
   margin: 0em 1em 1em 1em;
+  font-family:serif
 }
 
 .title {

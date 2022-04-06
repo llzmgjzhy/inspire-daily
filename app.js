@@ -12,10 +12,93 @@ App({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })
+    // 监听小程序退出
+    wx.onAppHide((res) => {
+      var that = this;
+      // 根据photo_type获取图片imgurl
+      var photo_url
+      if (that.globalData.photo_type == 1) {
+        photo_url = 'api/api.php'
+      } else {
+        photo_url = 'gqapi/gqapi.php'
+      }
+      wx.request({
+        url: 'https://api.ixiaowai.cn/' + photo_url + '?return=json',
+        header: {
+          'content-type': 'application/json'
+        },
+        method: "GET",
+        success: function (res) {
+          that.globalData.imgurl=res.data.imgurl
+        }
+      })
+      // 根据motto_type获取语录text_content
+      if (parseInt(that.globalData.motto_type) < 4) {
+        var motto_index
+        switch (parseInt(that.globalData.motto_type)) {
+          case 0:
+            motto_index = 6
+            break;
+          case 1:
+            motto_index = 7
+            break;
+          case 2:
+            motto_index = 1
+            break;
+          default:
+            motto_index = 3
+            break;
+        }
+        wx.request({
+          url: 'https://v2.alapi.cn/api/mingyan?typeid=' + motto_index + '&token=LwExDtUWhF3rH5ib',
+          header: {
+            'content-type': 'application/json'
+          },
+          success: function (res) {
+            var response = JSON.stringify(res.data.data.content)
+            response = response.split("<br>").join("")
+            // console.log(response.text)
+            // that.setData({
+            //   text_content: response
+            // })
+            that.globalData.text_content=response
+          }
+        })
+      } else if (parseInt(that.globalData.motto_type) == 4) {
+        wx.request({
+          url: 'https://apis.juhe.cn/fapig/soup/query?key=a05a05c11edb1b817885ffa14b4911ca',
+          header: {
+            'content-type': 'application/json'
+          },
+          success: function (res) {
+            var response = JSON.stringify(res.data.result.text)
+            response = response.split("<br>").join("")
+            // console.log(response.text)
+
+            that.globalData.text_content=response
+          }
+        })
+      } else {
+        wx.request({
+          url: 'https://api.oddfar.com/yl/q.php?c=1003&encode=json',
+          header: {
+            'content-type': 'application/json'
+          },
+          success: function (res) {
+            var response = JSON.stringify(res.data.text)
+            response = response.split("<br>").join("")
+            // console.log(response.text)
+            that.globalData.text_content=response
+          }
+        })
+      }
+    })
   },
   globalData: {
     userInfo: "",
     photo_type: "0",
+    imgurl:"",
+    text_content:"",
     motto_type: "0",
     goals: [{
       text: "送花",

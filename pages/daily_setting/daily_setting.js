@@ -12,7 +12,7 @@ Page({
     default_index_photo: 0,
     default_index_motto: 0,
     photo_columns: ["风景", "动漫"],
-    motto_columns: ["理想", "志向", "爱情","青春","鸡汤语录","网易云热评"],
+    motto_columns: ["理想", "志向", "爱情", "青春", "鸡汤语录", "网易云热评"],
     // time的格式是日期距今的毫秒数
     goals: [{
         text: "送花",
@@ -278,7 +278,7 @@ Page({
         standard_goals[i].time = parseInt(standard_goals[i].time) + nowtime
       }
       wx.request({
-        url: 'http://120.25.169.51/inspire-daily/server/inda.php',
+        url: 'https://xubeiyang.com.cn/inspire-daily/server/inda.php',
         data: {
           action: "save_setting",
           openid: this.data.openid,
@@ -307,6 +307,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中',
+    });
     // 获取用户的图片、语录类型，goals和today事件并在页面显示前进行赋值
     var that = this;
     // 获取存储信息
@@ -314,8 +317,10 @@ Page({
       this.setData({
         openid: wx.getStorageSync('openid')
       })
+    }
+    if (that.data.goals != app.globalData.goals && that.data.today != app.globalData.toady) {
       wx.request({
-        url: 'http://120.25.169.51/inspire-daily/server/inda.php',
+        url: 'https://xubeiyang.com.cn/inspire-daily/server/inda.php',
         data: {
           action: "get_info",
           openid: that.data.openid,
@@ -346,13 +351,14 @@ Page({
         },
       })
     }
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    wx.hideLoading();
   },
 
   /**
