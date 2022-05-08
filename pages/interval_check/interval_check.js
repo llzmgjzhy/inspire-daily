@@ -20,7 +20,7 @@ Page({
     popup_index: "",
     // 是否为过去时间的判断，1为是，0为否
     popup_past: "",
-    transition_show:true
+    transition_show: true
   },
   GoalsTap(event) {
     // console.log(event);
@@ -167,6 +167,7 @@ Page({
           action: "save_interval",
           openid: this.data.openid,
           interval: JSON.stringify(standard_goals),
+          recordtime: nowtime,
         },
         header: {
           "Content-Type": "application/json"
@@ -175,6 +176,7 @@ Page({
           // console.log(res.data);
           Toast.success('保存成功');
           app.globalData.interval = standard_goals
+          wx.setStorageSync('interval', standard_goals);
         },
       })
     } else {
@@ -195,7 +197,11 @@ Page({
       that.setData({
         openid: wx.getStorageSync('openid')
       })
-      if (that.data.goals != app.globalData.interval) {
+      if (!!wx.getStorageSync('interval')) {
+        that.setData({
+          goals: wx.getStorageSync('interval')
+        })
+      } else {
         wx.request({
           url: 'https://xubeiyang.com.cn/inspire-daily/server/inda.php',
           data: {
@@ -219,6 +225,8 @@ Page({
               }
             }
             var goals = standard_goals
+            app.globalData.interval = standard_goals
+            wx.setStorageSync('interval', standard_goals);
             that.setData({
               goals: goals,
             })

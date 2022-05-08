@@ -1,12 +1,12 @@
 <!--index.wxml-->
-
 <view class="container">
   <view class="photo">
     <!-- <van-divider contentPosition="center"
           customStyle="color: black;  font-size: 15px;font-family:Georgia, 'Times New Roman', Times, serif">
           photo🏕️
         </van-divider> -->
-    <van-image fit="widthFix" custom-class="image-show" src="{{imgurl}}"></van-image>
+    <van-image lazy-load fit="widthFix" custom-class="image-show" src="{{imgurl}}"></van-image>
+    <!-- <image referrer="no-referrer|origin|unsafe-url" mode="widthFix"  src="https://images.weserv.nl/?url=https://infinitypro-img.infinitynewtab.com/wallpaper/ocean/19005.jpg" /> -->
   </view>
 
   <view class="motto">

@@ -11,7 +11,7 @@ Page({
     motto_type: "",
     default_index_photo: 0,
     default_index_motto: 0,
-    photo_columns: ["风景", "动漫"],
+    photo_columns: ["风景", "动漫","随机"],
     motto_columns: ["理想", "志向", "爱情", "青春", "鸡汤语录", "网易云热评"],
     // time的格式是日期距今的毫秒数
     goals: [{
@@ -286,6 +286,7 @@ Page({
           motto_type: this.data.default_index_motto,
           goals: JSON.stringify(standard_goals),
           today: JSON.stringify(this.data.today),
+          recordtime: new Date().getTime(),
         },
         header: {
           "Content-Type": "application/json"

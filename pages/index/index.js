@@ -68,22 +68,52 @@ Page({
           var photo_url
           if (parseInt(that.data.photo_type) == "1") {
             photo_url = 'api/api.php'
-          } else {
+            wx.request({
+              url: 'https://api.ixiaowai.cn/' + photo_url + '?return=json',
+              header: {
+                'content-type': 'application/json'
+              },
+              method: "GET",
+              success: function (res) {
+                that.setData({
+                  imgurl: res.data.imgurl
+                })
+                app.globalData.imgurl = res.data.imgurl
+              }
+            })
+          } else if (parseInt(that.data.photo_type) == "0") {
             photo_url = 'gqapi/gqapi.php'
+            wx.request({
+              url: 'https://api.ixiaowai.cn/' + photo_url + '?return=json',
+              header: {
+                'content-type': 'application/json'
+              },
+              method: "GET",
+              success: function (res) {
+                that.setData({
+                  imgurl: res.data.imgurl
+                })
+                app.globalData.imgurl = res.data.imgurl
+              }
+            })
+          } else {
+            var nowtime = new Date().getTime()
+            nowtime = JSON.stringify(nowtime)
+            wx.request({
+              url: 'https://infinity-api.infinitynewtab.com/random-wallpaper?_=' + nowtime,
+              header: {
+                'content-type': 'application/json'
+              },
+              method: "GET",
+              success: function (res) {
+                let tempurl="https://images.weserv.nl/?url="+ res.data.data[0].src.mediumSrc
+                that.setData({
+                  imgurl: tempurl
+                })
+                app.globalData.imgurl = tempurl
+              }
+            })
           }
-          wx.request({
-            url: 'https://api.ixiaowai.cn/' + photo_url + '?return=json',
-            header: {
-              'content-type': 'application/json'
-            },
-            method: "GET",
-            success: function (res) {
-              that.setData({
-                imgurl: res.data.imgurl
-              })
-              app.globalData.imgurl=res.data.imgurl
-            }
-          })
           // 根据motto_type获取语录text_content
           if (parseInt(that.data.motto_type) < 4) {
             var motto_index
@@ -113,7 +143,7 @@ Page({
                 that.setData({
                   text_content: response
                 })
-                app.globalData.text_content=response
+                app.globalData.text_content = response
               }
             })
           } else if (parseInt(that.data.motto_type) == 4) {
@@ -129,7 +159,7 @@ Page({
                 that.setData({
                   text_content: response
                 })
-                app.globalData.text_content=response
+                app.globalData.text_content = response
               }
             })
           } else {
@@ -145,7 +175,7 @@ Page({
                 that.setData({
                   text_content: response
                 })
-                app.globalData.text_content=response
+                app.globalData.text_content = response
               }
             })
           }
@@ -217,7 +247,7 @@ Page({
           }
           var goals = standard_goals
           var today = JSON.parse(res.data.data[0].today)
-          if((that.data.motto_type!=res.data.data[0].motto_type)||(that.data.photo_type!=res.data.data[0].photo_type)){
+          if ((that.data.motto_type != res.data.data[0].motto_type) || (that.data.photo_type != res.data.data[0].photo_type)) {
             that.onLoad()
           }
           nowapp.globalData.goals = goals
@@ -225,8 +255,8 @@ Page({
           nowapp.globalData.photo_type = res.data.data[0].photo_type
           nowapp.globalData.motto_type = res.data.data[0].motto_type
           that.setData({
-            imgurl:nowapp.globalData.imgurl,
-            text_content:nowapp.globalData.text_content,
+            imgurl: nowapp.globalData.imgurl,
+            text_content: nowapp.globalData.text_content,
             goals: goals,
             today: today,
             photo_type: res.data.data[0].photo_type,

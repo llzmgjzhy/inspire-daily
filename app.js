@@ -19,19 +19,42 @@ App({
       var photo_url
       if (that.globalData.photo_type == 1) {
         photo_url = 'api/api.php'
-      } else {
+        wx.request({
+          url: 'https://api.ixiaowai.cn/' + photo_url + '?return=json',
+          header: {
+            'content-type': 'application/json'
+          },
+          method: "GET",
+          success: function (res) {
+            that.globalData.imgurl = res.data.imgurl
+          }
+        })
+      } else if (that.globalData.photo_type == 0) {
         photo_url = 'gqapi/gqapi.php'
+        wx.request({
+          url: 'https://api.ixiaowai.cn/' + photo_url + '?return=json',
+          header: {
+            'content-type': 'application/json'
+          },
+          method: "GET",
+          success: function (res) {
+            that.globalData.imgurl = res.data.imgurl
+          }
+        })
+      } else {
+        var nowtime = new Date().getTime()
+        wx.request({
+          url: 'https://infinity-api.infinitynewtab.com/random-wallpaper?_=' + nowtime,
+          header: {
+            'content-type': 'application/json'
+          },
+          method: "GET",
+          success: function (res) {
+            let tempurl="https://images.weserv.nl/?url="+ res.data.data[0].src.mediumSrc
+            that.globalData.imgurl = tempurl
+          }
+        })
       }
-      wx.request({
-        url: 'https://api.ixiaowai.cn/' + photo_url + '?return=json',
-        header: {
-          'content-type': 'application/json'
-        },
-        method: "GET",
-        success: function (res) {
-          that.globalData.imgurl=res.data.imgurl
-        }
-      })
       // 根据motto_type获取语录text_content
       if (parseInt(that.globalData.motto_type) < 4) {
         var motto_index
@@ -61,7 +84,7 @@ App({
             // that.setData({
             //   text_content: response
             // })
-            that.globalData.text_content=response
+            that.globalData.text_content = response
           }
         })
       } else if (parseInt(that.globalData.motto_type) == 4) {
@@ -75,7 +98,7 @@ App({
             response = response.split("<br>").join("")
             // console.log(response.text)
 
-            that.globalData.text_content=response
+            that.globalData.text_content = response
           }
         })
       } else {
@@ -88,7 +111,7 @@ App({
             var response = JSON.stringify(res.data.text)
             response = response.split("<br>").join("")
             // console.log(response.text)
-            that.globalData.text_content=response
+            that.globalData.text_content = response
           }
         })
       }
@@ -97,8 +120,8 @@ App({
   globalData: {
     userInfo: "",
     photo_type: "0",
-    imgurl:"",
-    text_content:"",
+    imgurl: "",
+    text_content: "",
     motto_type: "0",
     goals: [{
       text: "送花",
@@ -122,7 +145,7 @@ App({
     }, {
       text: "冰淇淋"
     }],
-    interval:[{
+    interval: [{
       text: "看星星",
       time: "170684546612",
       formatDate: "2016-11-7"
